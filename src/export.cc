@@ -528,8 +528,8 @@ void export_svg(const Polygon2d &poly, std::ostream &output)
 	output
 		<< "<?xml version=\"1.0\" standalone=\"no\"?>\n"
 		<< "<!DOCTYPE svg PUBLIC \"-//W3C//DTD SVG 1.1//EN\" \"http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd\">\n"
-		<< "<svg width=\"" << width << "\" height=\"" << height
-		<< "\" viewBox=\"" << minx << " " << miny << " " << width << " " << height
+		<< "<svg width=\"" << width << "mm\" height=\"" << height
+		<< "mm\" viewBox=\"0 0 " << width << " " << height
 		<< "\" xmlns=\"http://www.w3.org/2000/svg\" version=\"1.1\">\n"
 		<< "<title>OpenSCAD Model</title>\n";
 
@@ -540,17 +540,17 @@ void export_svg(const Polygon2d &poly, std::ostream &output)
 		}
 		
 		const Eigen::Vector2d& p0 = o.vertices[0];
-		output << "M " << p0.x() << "," << -p0.y();
+		output << "M " << (p0.x() + minx) << "," << (-p0.y() - miny);
 		for (unsigned int idx = 1;idx < o.vertices.size();idx++) {
 			const Eigen::Vector2d& p = o.vertices[idx];
-			output << " L " << p.x() << "," << -p.y();
+			output << " L " << (p.x() + minx) << "," << (-p.y() - miny);
 			if ((idx % 6) == 5) {
 				output << "\n";
 			}
 		}
 		output << " z\n";
 	}
-	output << "\" stroke=\"black\" fill=\"lightgray\" stroke-width=\"0.5\"/>";
+	output << "\" stroke=\"black\" fill=\"none\" stroke-width=\"0.01mm\"/>";
 
 	output << "</svg>\n";	
 
